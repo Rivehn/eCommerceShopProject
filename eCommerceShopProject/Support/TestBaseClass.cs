@@ -18,6 +18,7 @@ namespace eCommerceShopProject.Support
         public const int DISCOUNT = 10; // 100 = 100% ACTUAL DISCOUNT = 15
         public string? orderNumber; //Captured after checkout
         public string? accountOrder; //Captured in My accounts
+        public const string CLOTHINGITEM = "belt";
 
         [BeforeTestRun]
         public static void Setup()

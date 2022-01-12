@@ -10,31 +10,27 @@ namespace eCommerceShopProject.Support
 {
     public static class TestHelperClass
     {
-        public static void UtilThreadSleeper(int seconds) //For all your most intense hatred of AJAX needs, just add how many seconds you want to KO the stupid machine for!
+        public static void UtilThreadSleeper(int seconds) //For all your intense hatred of AJAX needs, just add how long you want to KO your stupid machine for!
         {
             Thread.Sleep(seconds * 1000);
         }
-
-        public static void UtilUltraWaiter(WebDriverWait wait, By element) //Instantiate a unique wait object
+        public static void UtilUltraWaiter(WebDriverWait wait, By element) //Explicit wait for an element to show
         {
             wait.Until(drv => drv.FindElement(element).Displayed);
         }
-
         public static void UtilBasketClearer(IWebDriver driver) //MUST be at the basket page before calling this method
         {
-            UtilThreadSleeper(5);//First wait for any leftover AJAX not accounted for.
+            UtilThreadSleeper(5);//wait for any leftover AJAX
             //Clear Coupon
             driver.FindElement(By.CssSelector(".woocommerce-remove-coupon")).Click();
             UtilThreadSleeper(5);
             //Clear Basket
-            driver.FindElement(By.CssSelector(".remove")).Click(); //ONLY works with one item in basket I believe
+            driver.FindElement(By.CssSelector(".remove")).Click(); //Only works with one item in basket
         }
-
         public static void UtilElementBonker(IWebDriver driver, By element) //Bonks an element (clicks it)
         {
             driver.FindElement(element).Click();
         }
-
         public static string UtilTextReader(IWebDriver driver, By element)
         {
             return driver.FindElement(element).Text;
@@ -47,6 +43,12 @@ namespace eCommerceShopProject.Support
         {
             driver.FindElement(element).SendKeys(value);
         }
-
+        public static void UtilScreenshotter(IWebDriver driver, string screenshotName) //filepath must be configured on different machines
+        {
+            ITakesScreenshot ssdriver = driver as ITakesScreenshot;
+            Screenshot screenshot = ssdriver.GetScreenshot();
+            screenshot.SaveAsFile(@"C:\Users\PeterDeng\Pictures\" + screenshotName, ScreenshotImageFormat.Jpeg);
+            Console.WriteLine(@"Screenshot has been saved to: C:\Users\PeterDeng\Pictures\" + screenshotName + ".Jpeg");
+        }
     }
 }

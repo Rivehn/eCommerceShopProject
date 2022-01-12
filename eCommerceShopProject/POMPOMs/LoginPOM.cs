@@ -9,11 +9,13 @@ namespace eCommerceShopProject.POMPOMs
 {
     public class LoginPOM
     {
-        By UsernameField = By.Id("username");
-        By PasswordField = By.Id("password");
-        By SubmitButton = By.CssSelector("button[name='login']");
-        public By GetSubmit(){return SubmitButton;}
-        public By GetUsernameField(){return UsernameField;}
-        public By GetPasswordField(){return PasswordField;}
+        By usernameField = By.Id("username");
+        By passwordField = By.Id("password");
+        By submitButton = By.CssSelector("button[name='login']");
+        By bottomThing = By.LinkText("Dismiss"); //Bottom banner
+        public By GetSubmit(){return submitButton;}
+        public By GetUsernameField(){return usernameField;}
+        public By GetPasswordField(){return passwordField;}
+        public By GetBottomThing() { return bottomThing;}
     }
 }

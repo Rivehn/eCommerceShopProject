@@ -22,7 +22,7 @@ namespace eCommerceShopProject.StepDefinitions
         public BillPOM bill = new();
         public OrderPOM order = new();
         public MyAccountPOM account = new();
-        public BeaniePOM beanie = new();
+        public ClothingPOM clothing = new();
         public MyAccountOrderPOM myAccountOrder = new();
         public Customer customer = new();
 
@@ -31,14 +31,13 @@ namespace eCommerceShopProject.StepDefinitions
         {
             //Go to designated site
             driver.Url = "https://www.edgewordstraining.co.uk/demo-site/my-account/";
-            driver.FindElement(By.LinkText("Dismiss")).Click();
+            UtilElementBonker(driver, login.GetBottomThing());
 
             //Login to the site
             UtilFieldClearer(driver, login.GetUsernameField());
             UtilFieldClearer(driver, login.GetPasswordField());
             UtilTypeWriter(driver, login.GetUsernameField(), u);
             UtilTypeWriter(driver, login.GetPasswordField(), p);
-            Console.WriteLine("Logging in with USERNAME: " + u);
             UtilElementBonker(driver, login.GetSubmit());
         }
 
@@ -54,9 +53,9 @@ namespace eCommerceShopProject.StepDefinitions
         {
             //Add to Cart
             UtilElementBonker(driver, account.GetShop());
-            UtilElementBonker(driver, shop.GetBeanie());//
-            UtilElementBonker(driver, beanie.GetAddToCart());//
-            UtilElementBonker(driver, beanie.GetCart());
+            UtilElementBonker(driver, shop.GetClothing(CLOTHINGITEM));
+            UtilElementBonker(driver, clothing.GetAddToCart());
+            UtilElementBonker(driver, clothing.GetCart());
         }
 
         [When(@"I use a discount code '([^']*)'")]
@@ -74,6 +73,7 @@ namespace eCommerceShopProject.StepDefinitions
         [Then(@"discount is applied")]
         public void ThenDiscountIsApplied()
         {
+            //verify if discount is correct
             try
             {
                 UtilUltraWaiter(wait, checkout.GetCartTotals());
@@ -83,7 +83,6 @@ namespace eCommerceShopProject.StepDefinitions
             catch (StaleElementReferenceException){}
             catch (NoSuchElementException){}
             catch (ElementClickInterceptedException){}
-            //verify if discount is correct
             try
             {
                 Assert.That(checkout.CheckDiscount() == DISCOUNT, "Discounts did not match.");
@@ -125,15 +124,17 @@ namespace eCommerceShopProject.StepDefinitions
         [Then(@"the order displays in my account")]
         public void ThenTheOrderDisplaysInMyAccount()
         {
-            //Capture order
+            //Capture order and save a screenshot
             UtilUltraWaiter(wait, order.GetOrderNumber());
             orderNumber = UtilTextReader(driver, order.GetOrderNumber());
+            UtilScreenshotter(driver, "OrderPage.jpeg");
             Console.WriteLine(orderNumber);
 
-            //Check the order number isn't fake
+            //Check the order number and save a screenshot
             UtilElementBonker(driver, order.GetMyAccount());
             UtilElementBonker(driver, account.GetOrders());
             accountOrder = (UtilTextReader(driver, myAccountOrder.GetAccountOrderValue()))[1..];
+            UtilScreenshotter(driver, "AccountOrderPage.jpeg");
             Console.WriteLine(accountOrder);
             UtilElementBonker(driver, account.GetLogout());
             Assert.That(orderNumber == accountOrder, "Order Number is not the same.");

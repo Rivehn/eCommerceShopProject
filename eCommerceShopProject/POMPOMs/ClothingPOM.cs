@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace eCommerceShopProject.POMPOMs
 {
-    public class BeaniePOM
+    public class ClothingPOM
     {
         By addToCart = By.CssSelector("button[name='add-to-cart']");
         By cart = By.LinkText("Cart");
