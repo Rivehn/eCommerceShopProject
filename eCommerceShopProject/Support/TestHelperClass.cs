@@ -27,7 +27,7 @@ namespace eCommerceShopProject.Support
             //Clear Basket
             driver.FindElement(By.CssSelector(".remove")).Click(); //Only works with one item in basket
         }
-        public static void UtilElementBonker(IWebDriver driver, By element) //Bonks an element (clicks it)
+        public static void UtilElementClicker(IWebDriver driver, By element) //Bonks an element (clicks it)
         {
             driver.FindElement(element).Click();
         }
@@ -49,6 +49,29 @@ namespace eCommerceShopProject.Support
             Screenshot screenshot = ssdriver.GetScreenshot();
             screenshot.SaveAsFile(@"C:\Users\PeterDeng\Pictures\" + screenshotName, ScreenshotImageFormat.Jpeg);
             Console.WriteLine(@"Screenshot has been saved to: C:\Users\PeterDeng\Pictures\" + screenshotName + ".Jpeg");
+        }
+        public static void UtilExtendedClicker(IWebDriver driver, By element, string expectedUrl)
+        {
+            int tries = 0;
+            while(driver.Url != expectedUrl && tries <= 5)
+            {
+                tries++;
+                try
+                {
+                    UtilElementClicker(driver, element);
+                }
+                catch (StaleElementReferenceException) { }
+                catch (NoSuchElementException) { }
+                catch (ElementClickInterceptedException) { }
+                if(driver.Url == expectedUrl)
+                {
+                    Console.WriteLine("Click is successful");
+                }
+                else
+                {
+                    //Console.WriteLine("Attempt: " + tries + " unsuccessful.");
+                }
+            }
         }
     }
 }

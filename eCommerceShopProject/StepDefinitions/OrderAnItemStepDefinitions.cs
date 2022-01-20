@@ -31,14 +31,14 @@ namespace eCommerceShopProject.StepDefinitions
         {
             //Go to designated site
             driver.Url = "https://www.edgewordstraining.co.uk/demo-site/my-account/";
-            UtilElementBonker(driver, login.GetBottomThing());
+            UtilElementClicker(driver, login.GetBottomThing());
 
             //Login to the site
             UtilFieldClearer(driver, login.GetUsernameField());
             UtilFieldClearer(driver, login.GetPasswordField());
             UtilTypeWriter(driver, login.GetUsernameField(), u);
             UtilTypeWriter(driver, login.GetPasswordField(), p);
-            UtilElementBonker(driver, login.GetSubmit());
+            UtilElementClicker(driver, login.GetSubmit());
         }
 
         [Given(@"I am logged into my account")]
@@ -52,22 +52,22 @@ namespace eCommerceShopProject.StepDefinitions
         public void WhenIPurchaseAnItem()
         {
             //Add to Cart
-            UtilElementBonker(driver, account.GetShop());
-            UtilElementBonker(driver, shop.GetClothing(CLOTHINGITEM));
-            UtilElementBonker(driver, clothing.GetAddToCart());
-            UtilElementBonker(driver, clothing.GetCart());
+            UtilElementClicker(driver, account.GetShop());
+            UtilElementClicker(driver, shop.GetClothing(CLOTHINGITEM));
+            UtilElementClicker(driver, clothing.GetAddToCart());
+            UtilElementClicker(driver, clothing.GetCart());
         }
 
         [When(@"I use a discount code '([^']*)'")]
         public void WhenIUseADiscountCode(string coupon)
         {
             //apply a discount coupon
-            if(UtilTextReader(driver, checkout.GetBody()).Contains("[remove]")){UtilElementBonker(driver, checkout.GetRemove());}
+            if(UtilTextReader(driver, checkout.GetBody()).Contains("[Remove]")){UtilElementClicker(driver, checkout.GetRemove());}
             UtilUltraWaiter(wait, checkout.GetCouponField());
             UtilUltraWaiter(wait, checkout.GetApplyCoupon());
             UtilFieldClearer(driver, checkout.GetCouponField());
             UtilTypeWriter(driver, checkout.GetCouponField(), coupon);
-            UtilElementBonker(driver, checkout.GetApplyCoupon());
+            UtilElementClicker(driver, checkout.GetApplyCoupon());
         }
 
         [Then(@"discount is applied")]
@@ -105,20 +105,20 @@ namespace eCommerceShopProject.StepDefinitions
         {
             //Proceed to checkout
             UtilUltraWaiter(wait, checkout.GetCheckout());
-            UtilElementBonker(driver, checkout.GetCheckout());
+            UtilExtendedClicker(driver, checkout.GetCheckout(), checkout.GetUrl());
 
             //Fill in billing details
             UtilUltraWaiter(wait, bill.GetFirstName());
-            bill.KillBill(driver, customer); //change form to customer object
+            bill.KillBill(driver, customer);
             
             //Place order
             try
             {
                 UtilUltraWaiter(wait, bill.GetCheckPayment());
-                UtilElementBonker(driver, bill.GetCheckPayment());
+                UtilElementClicker(driver, bill.GetCheckPayment());
             }
             catch (StaleElementReferenceException){}
-            UtilElementBonker(driver, bill.GetOrder());
+            UtilElementClicker(driver, bill.GetOrder());
         }
 
         [Then(@"the order displays in my account")]
@@ -131,12 +131,12 @@ namespace eCommerceShopProject.StepDefinitions
             Console.WriteLine(orderNumber);
 
             //Check the order number and save a screenshot
-            UtilElementBonker(driver, order.GetMyAccount());
-            UtilElementBonker(driver, account.GetOrders());
+            UtilElementClicker(driver, order.GetMyAccount());
+            UtilElementClicker(driver, account.GetOrders());
             accountOrder = (UtilTextReader(driver, myAccountOrder.GetAccountOrderValue()))[1..];
             UtilScreenshotter(driver, "AccountOrderPage.jpeg");
             Console.WriteLine(accountOrder);
-            UtilElementBonker(driver, account.GetLogout());
+            UtilElementClicker(driver, account.GetLogout());
             Assert.That(orderNumber == accountOrder, "Order Number is not the same.");
         }
     }

@@ -19,10 +19,11 @@ namespace eCommerceShopProject.POMPOMs
         By applyCoupon = By.CssSelector("button[name='apply_coupon']");
         By body = By.TagName("body");
         //IWebElement Checkout => driver.FindElement(By.CssSelector(".alt.button.checkout-button.wc-forward"));
-        By checkoutButton = By.LinkText("Proceed to checkout");
+        By checkoutButton = By.CssSelector(".alt.button.checkout-button.wc-forward");
         By cartTotals = By.CssSelector("#post-5 > div > div > div > div");
         By remove = By.CssSelector(".woocommerce-remove-coupon");
         By discValue = By.CssSelector(".cart-discount.coupon-edgewords > td > .amount.woocommerce-Price-amount");
+        string url = "https://www.edgewordstraining.co.uk/demo-site/checkout/";
         decimal totalValue => System.Convert.ToDecimal
             ((driver.FindElement(By.CssSelector(".cart-subtotal > td > .amount.woocommerce-Price-amount")).Text)[1..]);
         decimal actValue => System.Convert.ToDecimal
@@ -46,5 +47,6 @@ namespace eCommerceShopProject.POMPOMs
         public By GetApplyCoupon(){return applyCoupon;}
         public By GetBody(){return body;}
         public By GetCheckout(){return checkoutButton;}
+        public string GetUrl() { return url;}
     }
 }

@@ -15,10 +15,10 @@ namespace eCommerceShopProject.Support
     {
         public static IWebDriver? driver;
         public static WebDriverWait? wait;
-        public const int DISCOUNT = 10; // 100 = 100% ACTUAL DISCOUNT = 15
+        public const int DISCOUNT = 15; // 100 = 100% ACTUAL DISCOUNT = 15
         public string? orderNumber; //Captured after checkout
         public string? accountOrder; //Captured in My accounts
-        public const string CLOTHINGITEM = "belt";
+        public const string CLOTHINGITEM = "firstItem";
 
         [BeforeTestRun]
         public static void Setup()
@@ -28,7 +28,7 @@ namespace eCommerceShopProject.Support
             driver = new ChromeDriver(options);
             driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(5);
             options.AddUserProfilePreference("profile.default_content_setting_values.cookies", 2);
-            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(25));
+            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
         }
         [AfterTestRun]
         public static void TearDown()
